@@ -1,0 +1,86 @@
+<script>
+	
+	let units = [[1,'одна'],[2,'две'],[3,'три'],[4,'четыре'],[5,'пять'],[6,'шесть'],[7,'семь'],[8,'восемь'],[9,'девять']],
+		
+		tens = [[10,'десять'],[11,'одинадцать'],[12,'двенадцать'],[13,'тринадцать'],[14,'четырнадцать'],[15,'пятнадцать'],[16,'шестнадцать'],[17,'семнадцать'],[18,'весемнадцать'],[19,'девятнадцать'],[20,'двадцать'],[30,'тридцать'],[40,'сорок'],[50,'пятдесят'],[60,'шестдесят'],[70,'семдесят'],[80,'восемдесят'],[90,'девяносто']],
+		
+		hundredths =[[100,'сто'],[200,'двесте'],[300,'триста'],[400,'четыреста'],[500,'пятсот'],[600,'шестсот'],[700,'семсот'],[800,'восемсот'],[900,'девятсот']];
+		
+		let output = ''; //Запишем сюда конечный вывод
+		let sum = prompt(`Enter from 1 to 999:`,0);
+
+		if(sum.length < 2){
+			sum = '00' + sum;
+		}else if(sum.length < 3){
+			sum = '0' + sum;
+		};
+
+		let [hundredthsNum,tensNum,unitsNum] = [...sum]; //h 100-999, t 10-99, u 1-9
+		let decimal = parseInt(tensNum + unitsNum); // Соеденим для подбора окончания
+
+		//hCounter - переводит в слова сотые
+		let hCounter = (h) =>{
+			if(h >= 100){
+				for(let i = 0; i < hundredths.length;i++){
+					if(hundredths[i][0] == hundredthsNum * 100){
+						 output = ` ${hundredths[i][1]}`;
+					};
+				};
+			}else return;	
+		};
+	
+		//tCounter - переводит в слова десятичные
+		let tCounter = (t) =>{
+			if(decimal > 10 && decimal < 20){
+				for(let i = 0; i < tens.length;i++){
+					if(tens[i][0] == decimal){
+						output += ` ${tens[i][1]}`;
+					};
+				};	
+			}else if (t => 20 || t == 10){
+				for(let i = 0; i < tens.length;i++){
+					if(tens[i][0] == tensNum * 10 ){
+						output += ` ${tens[i][1]}`;
+					};
+				};
+			};	
+		};
+	
+		//uCounter - переводит в слова единицы
+		let uCounter = (u) =>{
+			if(parseInt(u) <= 9){
+				for(let i = 0; i < units.length;i++){
+					if(units[i][0] == unitsNum){
+						output += units[i][1];
+					};
+				};
+			}else if(parseInt(u) > 19 && decimal < 11 || decimal > 19){
+				for(let i = 0; i < units.length;i++){
+					if(units[i][0] == unitsNum){
+						output += ` ${units[i][1]}`;
+					};
+				};
+			};	
+		};
+		
+		//Добавляем окончание к сумме
+		let uah = () => {
+			if(unitsNum == 1 && decimal != 11){
+				output += ` гривна`;
+			}else if(unitsNum >= 2 && unitsNum <= 4 && decimal != 12 && decimal != 13 && decimal != 14){
+				output += ` гривны`;
+			}else{
+				output += ` гривен`;
+			};
+		};
+
+		if(sum > 0 || sum < 999){
+			hCounter(sum);
+			tCounter(sum);
+			uCounter(sum);
+			uah();
+		};
+	
+		alert(output);
+	
+</script>
